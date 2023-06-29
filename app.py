@@ -1,15 +1,11 @@
-# Bring in deps
 import os 
-from api_key import apikey 
 
 import streamlit as st 
-from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, SequentialChain 
-from langchain.memory import ConversationBufferMemory
+from langchain.chains import LLMChain 
 from langchain.utilities import WikipediaAPIWrapper 
-
-os.environ['OPENAI_API_KEY'] = apikey
+from langchain import PromptTemplate, HuggingFaceHub, LLMChain
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = 'xxxxxxxxx'
 
 # App framework
 st.title('Meal Plan Generator')
@@ -23,11 +19,10 @@ food_template = PromptTemplate(
 
 
 
-# Memory 
 
 
 # Llms
-llm = OpenAI(temperature=0.3) 
+llm=HuggingFaceHub(repo_id="gpt2-xl", model_kwargs={"temperature":0.7})
 plan_chain = LLMChain(llm=llm, prompt=food_template, verbose=True)
 
 wiki = WikipediaAPIWrapper()
